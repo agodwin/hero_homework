@@ -18,7 +18,7 @@ describe "a VISA credit card" do
 
     cc = CreditCard.new("4111 1111 1111 1")
     cc.type.should == CreditCardType::VISA
-    cc.valid?.should == true
+    cc.valid?.should == false #luhn not valid
 
     cc = CreditCard.new(4)
     cc.type.should == CreditCardType::VISA
@@ -34,7 +34,7 @@ describe "a DISCOVER credit card" do
   end
 
   it "should have 16 digits" do
-    cc = CreditCard.new("6011 1111 1111 1111")
+    cc = CreditCard.new("6011 1111 1001 1110")
     cc.type.should == CreditCardType::DISCOVER
     cc.valid?.should == true
 
@@ -71,9 +71,9 @@ describe "an AMERICAN EXPRESS credit card" do
     cc.type.should == CreditCardType::AMEX
     cc.valid?.should == false
 
-    cc = CreditCard.new("371 1111 1111 1111")
+    cc = CreditCard.new(371100011011101)
     cc.type.should == CreditCardType::AMEX
-    cc.valid?.should == true
+    cc.valid?.should == false #luhn not valid
 
     cc = CreditCard.new("3711 1111 1111 1111")
     cc.type.should == CreditCardType::AMEX
@@ -97,12 +97,12 @@ describe "a MASTERCARD credit card" do
   end
 
   it "should have 16 digits" do
-    cc = CreditCard.new("5111 1111 1111 1111")
+    cc = CreditCard.new("5111 1111 1001 1111")
     cc.type.should == CreditCardType::MASTERCARD
     cc.valid?.should == true
-    cc = CreditCard.new("5211 1111 1111 1111")
+    cc = CreditCard.new("5211 1101 0001 1111")
     cc.type.should == CreditCardType::MASTERCARD
-    cc.valid?.should == true
+    cc.valid?.should == false #luhn not valid
 
     cc = CreditCard.new("5111 1111 1111 1")
     cc.type.should == CreditCardType::MASTERCARD

@@ -80,13 +80,24 @@ private
     result
   end
 
+
   def lunh_function
-    true
-# LOOK AT THIS
-#
-# irb(main):063:0> no_space_cc_num.split(//)
-# => ["4", "5", "6", "7", "3", "3", "4", "2", "2", "1", "2", "2", "3", "4", "5", "5"]
-#
+    # Of all the implementations I reviewed, I found the lookup table solutiuon to be the clearest
+    # implementation based on http://en.wikipedia.org/wiki/Luhn_formula
+    # which contains a reference to https://gist.github.com/1182499
+
+    # no need to compute the value for => a+b when (("ab".to_i)*2) >= 10 
+    # we just create a map of the values and then do a look-up in the map
+    sum_lookup = {'0' => 0, '1' => 2, '2' => 4, '3' => 6, '4' => 8, '5' => 1, '6' => 3, '7' => 5, '8' => 7, '9' => 9}
+
+    number = @cc.reverse
+    sum = 0 
+
+    number.split('').each_with_index do |n, i|
+      sum += (i % 2 == 0) ? n.to_i : sum_lookup[n]
+    end 
+
+    sum % 10 == 0
   end
 end
 
