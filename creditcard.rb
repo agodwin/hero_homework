@@ -40,10 +40,7 @@ private
       when /^5[12345]/
         CreditCardType::MASTERCARD
 
-      when /^34/
-        CreditCardType::AMEX
-
-      when /^37/
+      when /^34/, /^37/
         CreditCardType::AMEX
 
       else
@@ -60,12 +57,7 @@ private
           result = lunh_function
         end
 
-      when CreditCardType::MASTERCARD
-        if (@cc_str.length == 16) then
-          result = lunh_function
-        end
-
-      when CreditCardType::DISCOVER
+      when CreditCardType::DISCOVER, CreditCardType::MASTERCARD
         if (@cc_str.length == 16) then
           result = lunh_function
         end
@@ -81,6 +73,11 @@ private
 
   def lunh_function
     true
+# LOOK AT THIS
+#
+# irb(main):063:0> no_space_cc_num.split(//)
+# => ["4", "5", "6", "7", "3", "3", "4", "2", "2", "1", "2", "2", "3", "4", "5", "5"]
+#
   end
 end
 
