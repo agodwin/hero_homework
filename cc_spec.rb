@@ -23,12 +23,6 @@ describe "a VISA credit card" do
     cc = CreditCard.new(4)
     cc.type.should == CreditCardType::VISA
     cc.valid?.should == false
-
-    cc = CreditCard.new("4111 ABCD 1111 1111")
-    cc.type.should == CreditCardType::VISA
-require "./creditcard"
-
-  #  cc.valid?.should == false
   end
 end
 
@@ -51,10 +45,6 @@ describe "a DISCOVER credit card" do
     cc = CreditCard.new(60111111111111111111111)
     cc.type.should == CreditCardType::DISCOVER
     cc.valid?.should == false
-
-    cc = CreditCard.new("6011 ABCD 1111 1111")
-    cc.type.should == CreditCardType::DISCOVER
-  #  cc.valid?.should == false
   end
 end
 
@@ -88,10 +78,6 @@ describe "an AMERICAN EXPRESS credit card" do
     cc = CreditCard.new("3711 1111 1111 1111")
     cc.type.should == CreditCardType::AMEX
     cc.valid?.should == false
-
-    cc = CreditCard.new("371 1111 BBBB 1111")
-    cc.type.should == CreditCardType::AMEX
-  #  cc.valid?.should == false
   end
 end
 
@@ -131,20 +117,36 @@ describe "a MASTERCARD credit card" do
     cc = CreditCard.new(52333333333333333333333333333)
     cc.type.should == CreditCardType::MASTERCARD
     cc.valid?.should == false
-
-    cc = CreditCard.new("5111 ABCD 1111 1111")
-    cc.type.should == CreditCardType::MASTERCARD
-  #  cc.valid?.should == false
-    cc = CreditCard.new("5211 ABCD 1111 1111")
-    cc.type.should == CreditCardType::MASTERCARD
-  #  cc.valid?.should == false
   end
 end
 
 
 
 describe "an UNKNOWN credit card" do
-  it "starts with any other value and is not valid" do
+  it "starts with a valid number sequence, but has non-numeric characters" do
+    cc = CreditCard.new("4111 ABCD 1111 1111")
+    cc.type.should == CreditCardType::UNKNOWN
+    cc.valid?.should == false
+
+    cc = CreditCard.new("6011 ABCD 1111 1111")
+    cc.type.should == CreditCardType::UNKNOWN
+    cc.valid?.should == false
+
+    cc = CreditCard.new("371 1111 BBBB 1111")
+    cc.type.should == CreditCardType::UNKNOWN
+    cc.valid?.should == false
+
+    cc = CreditCard.new("5111 ABCD 1111 1111")
+    cc.type.should == CreditCardType::UNKNOWN
+    cc.valid?.should == false
+
+    cc = CreditCard.new("5211 ABCD 1111 1111")
+    cc.type.should == CreditCardType::UNKNOWN
+    cc.valid?.should == false
+
+  end
+
+  it "does not start with a recgonized number sequence" do
     cc = CreditCard.new(601)
     cc.type.should == CreditCardType::UNKNOWN
     cc.valid?.should == false

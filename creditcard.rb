@@ -10,10 +10,19 @@ end
 
 class CreditCard
 
-  def initialize str=''
-     @cc_str = str.to_s.gsub(/ /, '')
-     @cc_type = identify_cc_type
-     @cc_valid = identify_cc_valid
+  def initialize input_str=''
+    @cc_original = input_str.to_s
+    @cc = @cc_original.gsub(/ /, '')
+
+    # at this time, credit cards must be digits
+    # \D will match any non-digit character - we must not find any (match must return nil)
+    if (@cc.match(/\D/) != nil) then
+      @cc_type = CreditCardType::UNKNOWN
+      @cc_valid = false
+    else
+      @cc_type = identify_cc_type
+      @cc_valid = identify_cc_valid
+    end
   end
 
   def valid?
@@ -25,12 +34,12 @@ class CreditCard
   end
 
   def numbers
-    @cc_str.to_i
+    @cc
   end
 
 private
   def identify_cc_type
-    case @cc_str
+    case @cc
       when /^6011/
         CreditCardType::DISCOVER
 
@@ -53,17 +62,17 @@ private
 
     case @cc_type
       when CreditCardType::VISA
-        if (@cc_str.length == 13) || (@cc_str.length == 16) then
+        if (@cc.length == 13) || (@cc.length == 16) then
           result = lunh_function
         end
 
       when CreditCardType::DISCOVER, CreditCardType::MASTERCARD
-        if (@cc_str.length == 16) then
+        if (@cc.length == 16) then
           result = lunh_function
         end
 
       when CreditCardType::AMEX
-        if (@cc_str.length == 15) then
+        if (@cc.length == 15) then
           result = lunh_function
       end
     end
