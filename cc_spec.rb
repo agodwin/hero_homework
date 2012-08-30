@@ -1,4 +1,9 @@
+#
+## run this with rspec cc_spec.rb --format documentation
+#
+
 require "./creditcard"
+
 
 describe "a VISA credit card" do
   it "should start with a 4" do
@@ -21,6 +26,8 @@ describe "a VISA credit card" do
 
     cc = CreditCard.new("4111 ABCD 1111 1111")
     cc.type.should == CreditCardType::VISA
+require "./creditcard"
+
   #  cc.valid?.should == false
   end
 end
