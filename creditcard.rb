@@ -11,9 +11,8 @@ end
 class CreditCard
 
   def initialize input_str=''
-    @cc_original = input_str.to_s
-    @cc = @cc_original.gsub(/ /, '')
-
+    @cc = input_str.to_s.gsub(/ /, '')
+    
     # at this time, credit cards must be digits
     # \D will match any non-digit character - we must not find any (match must return nil)
     if (@cc.match(/\D/) != nil) then
