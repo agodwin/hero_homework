@@ -3,6 +3,10 @@
 require 'optparse'
 require './creditcard'
 
+def write cc
+  printf("%s: %-18.18s\t%s\n", cc.type, cc.numbers, "#{cc.valid? ? '(valid)' : '(invalid)'}")
+end
+
 options = {}
 
 optparse = OptionParser.new do|opts|
@@ -28,7 +32,7 @@ optparse = OptionParser.new do|opts|
     end
   end
 
-  opts.on( '-f', '--file FILE_PATH', String,
+  opts.on( '-f', '--file FILE_NAME', String,
            'a file of credit card numbers (one per line)' ) do |file|
 
     if options.has_key?(:file) then
@@ -42,6 +46,7 @@ optparse = OptionParser.new do|opts|
 
   # must pass a value
   if ARGV.size == 0 then
+
     puts "\nERROR: no option given.\nPlease use one of the known options.\n\n"
     puts opts
     exit
@@ -61,16 +66,29 @@ rescue OptionParser::InvalidOption => e
   exit
 end
 
+
 if options.has_key?(:cc) then
-  puts "INPUT IS #{options[:cc]}"
-  cc = CreditCard.new(options[:cc])
-  #puts "#{cc.type}: #{cc.numbers}\t #{}"
-  #output = "%s: %18s\t%s\n"  % [cc.type, cc.numbers, "#{cc.valid? ? '(valid)' : '(invalid)'}"]
-  #print output
-  printf("%s: %-16.16s     %s\n", cc.type, cc.numbers, "#{cc.valid? ? '(valid)' : '(invalid)'}")
+  write CreditCard.new(options[:cc])
 end
 
 if options.has_key?(:file) then
-  puts "do the file thing for #{options[:file]}..."
+  cc_list = []
+
+  begin
+    file = File.new(options[:file], "r")
+    while (line = file.gets)
+      cc_list << line.chomp
+    end
+  rescue => err
+    puts "\nException: #{err}\n\n"
+    puts optparse
+    err
+  ensure 
+    file.close
+  end
+
+  cc_list.each do |cc|
+  write CreditCard.new(cc)
+  end        
 end
 
