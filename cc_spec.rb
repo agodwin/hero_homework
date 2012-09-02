@@ -4,7 +4,6 @@
 
 require "./creditcard"
 
-
 describe "a VISA credit card" do
   it "should start with a 4" do
     cc = CreditCard.new(4)
@@ -172,6 +171,56 @@ describe "an UNKNOWN credit card" do
     cc.valid?.should == false
 
     cc = CreditCard.new()
+    cc.type.should == CreditCardType::UNKNOWN
+    cc.valid?.should == false
+  end
+end
+
+describe "defined input values give expected results" do
+  it "\'4111111111111111\' is VISA and valid" do
+    cc = CreditCard.new(4111111111111111)
+    cc.type.should == CreditCardType::VISA
+    cc.valid?.should == true
+  end
+
+  it "\'4111111111111\' is VISA and invalid" do
+    cc = CreditCard.new(4111111111111)
+    cc.type.should == CreditCardType::VISA
+    cc.valid?.should == false
+  end
+
+  it "\'4012888888881881\' is VISA and valid" do
+    cc = CreditCard.new(4012888888881881)
+    cc.type.should == CreditCardType::VISA
+    cc.valid?.should == true
+  end
+
+  it "\'378282246310005\' is American Express and valid" do
+    cc = CreditCard.new(378282246310005)
+    cc.type.should == CreditCardType::AMEX
+    cc.valid?.should == true
+  end
+
+  it "\'6011111111111117\' is Discover and valid" do
+    cc = CreditCard.new(6011111111111117)
+    cc.type.should == CreditCardType::DISCOVER
+    cc.valid?.should == true
+  end
+
+  it "\'5105105105105100\' is MasterCard and valid" do
+    cc = CreditCard.new(5105105105105100)
+    cc.type.should == CreditCardType::MASTERCARD
+    cc.valid?.should == true
+  end
+
+  it "\'5105 1051 0510 5106\' is MasterCard and invalid" do
+    cc = CreditCard.new("5105 1051 0510 5106")
+    cc.type.should == CreditCardType::MASTERCARD
+    cc.valid?.should == false
+  end
+
+  it "\'9111111111111111\' is UNKNOWN and invalid" do
+    cc = CreditCard.new(9111111111111111)
     cc.type.should == CreditCardType::UNKNOWN
     cc.valid?.should == false
   end
