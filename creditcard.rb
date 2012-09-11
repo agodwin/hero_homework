@@ -16,20 +16,18 @@ class CreditCard
     # at this time, credit cards must be digits
     # \D will match any non-digit character - we must not find any (match must return nil)
     if (@cc.match(/\D/) != nil) then
-      @cc_type = CreditCardType::UNKNOWN
-      @cc_valid = false
+      @type = CreditCardType::UNKNOWN
+      @valid = false
     else
-      @cc_type = identify_cc_type
-      @cc_valid = identify_cc_valid
+      @type = identify_cc_type
+      @valid = identify_cc_valid
     end
   end
 
-  def valid?
-    @cc_valid
-  end
+  attr_reader :type
 
-  def type
-    @cc_type
+  def valid?
+    @valid
   end
 
   def numbers
@@ -59,7 +57,7 @@ private
   def identify_cc_valid
     result = false
 
-    case @cc_type
+    case self.type
       when CreditCardType::VISA
         if (@cc.length == 13) || (@cc.length == 16) then
           result = lunh_function
